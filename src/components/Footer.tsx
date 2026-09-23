@@ -10,7 +10,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ activeTab, onNavigate, onOpenCorporateModal }) => {
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/80 backdrop-blur-md border-t border-white/10 py-3 px-4 sm:px-8 shadow-2xl">
+    <footer className="w-full bg-slate-950 border-t border-white/10 py-6 sm:py-8 px-4 sm:px-8 relative z-20">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
         {/* Left Brand info */}
         <div className="flex items-center gap-3">

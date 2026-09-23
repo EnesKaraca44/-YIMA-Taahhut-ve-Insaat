@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Shield, Award, CheckCircle2, HardHat } from 'lucide-react';
+import { ArrowRight, Shield, Award, CheckCircle2, HardHat, ChevronDown } from 'lucide-react';
 import { companyData } from '../data/siteContent';
 
 interface HeroProps {
@@ -101,13 +101,22 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Scroll Mouse Indicator (inspired by Reference 1: MONS Yapı) */}
-        <div className="hidden lg:flex flex-col items-center gap-1.5 pt-2 text-slate-400 text-[10px] tracking-[0.25em] uppercase font-semibold">
-          <div className="w-5 h-8 rounded-full border-2 border-white/30 flex justify-center p-1">
+        {/* Interactive Scroll / Discovery Button */}
+        <button
+          type="button"
+          onClick={() => onNavigate('kurumsal')}
+          className="flex flex-col items-center gap-1.5 pt-2 text-slate-400 hover:text-[#E5BE72] text-[10px] sm:text-xs tracking-[0.25em] uppercase font-semibold cursor-pointer group transition-all duration-300 focus:outline-none"
+          title="Kurumsal bilgileri ve şirket profilini keşfedin"
+          aria-label="Kurumsal profilini keşfet"
+        >
+          <div className="w-5 h-8 rounded-full border-2 border-white/30 group-hover:border-[#C89D4B] flex justify-center p-1 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(200,157,75,0.4)]">
             <div className="w-1 h-2 bg-[#C89D4B] rounded-full animate-bounce" />
           </div>
-          <span>Keşfet</span>
-        </div>
+          <div className="flex items-center gap-1">
+            <span>Keşfet</span>
+            <ChevronDown className="w-3.5 h-3.5 text-[#C89D4B] group-hover:translate-y-0.5 transition-transform duration-200" />
+          </div>
+        </button>
 
       </div>
     </div>
