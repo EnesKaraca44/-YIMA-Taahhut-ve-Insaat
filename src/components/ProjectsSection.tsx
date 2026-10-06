@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, ArrowUpRight, FolderKanban } from 'lucide-react';
+import { MapPin, ArrowUpRight, FolderKanban, Camera, Video } from 'lucide-react';
 import { projectsData, projectCategories } from '../data/siteContent';
 import { ProjectItem } from '../types';
 import { ProjectModal } from './ProjectModal';
@@ -76,6 +76,28 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onNavigateCont
                   {project.statusPlaceholder}
                 </span>
               </div>
+
+              {/* Canlı Medya Rozetleri (Saha Videosu & Fotoğraf Sayısı) */}
+              {(project.videoUrl || (project.galleryImages && project.galleryImages.length > 0)) && (
+                <div className="absolute bottom-3 left-3 z-10 flex items-center gap-1.5 flex-wrap">
+                  {project.videoUrl && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-950/85 backdrop-blur-md text-[10px] font-extrabold text-[#E5BE72] border border-[#C89D4B]/40 shadow-md">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+                      </span>
+                      <Video className="w-3 h-3 text-[#C89D4B]" />
+                      <span>Saha Videosu</span>
+                    </span>
+                  )}
+                  {project.galleryImages && project.galleryImages.length > 0 && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-950/80 backdrop-blur-md text-[10px] font-bold text-slate-200 border border-white/20 shadow-md">
+                      <Camera className="w-3 h-3 text-slate-300" />
+                      <span>{project.galleryImages.length} Fotoğraf</span>
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="py-4 flex-1 flex flex-col justify-between space-y-3">

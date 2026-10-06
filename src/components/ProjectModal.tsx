@@ -19,7 +19,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, on
     <>
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in zoom-in-95 duration-200">
         <div 
-        className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[80vh] flex flex-col"
+        className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[85vh] flex flex-col"
         role="dialog"
         aria-modal="true"
         aria-labelledby="project-modal-title"

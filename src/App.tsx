@@ -103,7 +103,7 @@ export const App: React.FC = () => {
         {/* Section 3: Hizmetlerimiz (Services) */}
         <section 
           id="hizmetler" 
-          className="w-full py-16 sm:py-24 bg-slate-50 text-slate-900 border-b border-slate-200/60 scroll-mt-28"
+          className="w-full py-10 sm:py-16 bg-slate-50 text-slate-900 border-b border-slate-200/60 scroll-mt-20"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ServicesSection onNavigateContact={() => handleTabChange('iletisim')} />

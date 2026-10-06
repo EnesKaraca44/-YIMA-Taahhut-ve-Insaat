@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Briefcase, Building2, Ruler, Layers, ArrowUpRight, CheckSquare } from 'lucide-react';
+import { Building2, Layers, CheckCircle2, ArrowRight, CheckSquare, Pickaxe, Map, Train } from 'lucide-react';
 import { servicesData } from '../data/siteContent';
 import { ServiceItem } from '../types';
 import { ServiceModal } from './ServiceModal';
@@ -11,70 +11,73 @@ interface ServicesSectionProps {
 export const ServicesSection: React.FC<ServicesSectionProps> = ({ onNavigateContact }) => {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
 
-  const getIcon = (name: string) => {
-    switch (name) {
-      case 'Briefcase': return <Briefcase className="w-5 h-5 text-[#C89D4B]" />;
-      case 'Building2': return <Building2 className="w-5 h-5 text-[#C89D4B]" />;
-      case 'Ruler': return <Ruler className="w-5 h-5 text-[#C89D4B]" />;
-      default: return <Layers className="w-5 h-5 text-[#C89D4B]" />;
+  // Use more specific icons to match the engineering context
+  const getIcon = (index: number) => {
+    const props = { strokeWidth: 1.5, className: "w-7 h-7 text-slate-800" };
+    switch (index) {
+      case 0: return <Map {...props} />; // Karayolu
+      case 1: return <Layers {...props} />; // Menfez & Hidrolik
+      case 2: return <Pickaxe {...props} />; // İstinat Duvarı
+      case 3: return <Train {...props} />; // Demiryolu
+      default: return <Building2 {...props} />;
     }
   };
 
   return (
-    <div className="w-full py-2 text-slate-900">
-      {/* Section Header */}
-      <div className="mb-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-[#B48C36] text-xs font-bold tracking-wider uppercase mb-2">
-          <CheckSquare className="w-3.5 h-3.5" />
+    <div className="w-full text-slate-900 relative">
+      {/* Section Header - Centered */}
+      <div className="mb-8 flex flex-col items-center text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FDF2DF] border border-[#F1E0C3] text-[#A67E2E] text-xs font-bold tracking-wider uppercase mb-3">
           <span>Faaliyet Alanlarımız</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-tight">
           Mühendislik ve Uygulama Hizmetlerimiz.
         </h2>
-        <p className="mt-1.5 text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-          Taahhüt ve inşaat süreçlerinde planlamadan teslimata kadar her aşamada şeffaf, güvenilir ve yüksek standartlı çözümler sunuyoruz.
+        <p className="mt-4 text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          Uluslararası standartlarda, mühendislik çözümleri ve anahtar teslimi uygulama hizmetleri sunuyoruz.
         </p>
       </div>
 
       {/* Services Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        {servicesData.map((service) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {servicesData.map((service, index) => (
           <div
             key={service.id}
             onClick={() => setSelectedService(service)}
-            className="group relative py-6 transition-all duration-200 flex flex-col justify-between cursor-pointer border-t border-slate-200 first:border-t-0 md:border-t-0 md:border-l md:first:border-l-0 md:pl-6"
+            className="group bg-white rounded-[1.25rem] p-6 sm:p-8 flex flex-col items-start transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] shadow-xl shadow-slate-200/50 cursor-pointer relative overflow-hidden"
           >
-            <div>
-              {/* Icon Container */}
-              <div className="w-11 h-11 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center mb-4 group-hover:bg-[#0F172A] group-hover:border-[#0F172A] transition-all">
-                {getIcon(service.iconName)}
-              </div>
+            {/* Top Golden Border Accent */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#D4AF37] to-[#C89D4B]" />
 
-              {/* Title */}
-              <h3 className="text-base font-bold text-slate-900 group-hover:text-[#B48C36] transition-colors">
-                {service.title}
-              </h3>
-
-              {/* Description */}
-              <p className="mt-2 text-xs text-slate-600 leading-relaxed line-clamp-3">
-                {service.shortDescription}
-              </p>
-
-              {/* Micro Highlights */}
-              <div className="mt-4 space-y-2 border-t border-slate-100 pt-3">
-                {service.highlights.slice(0, 2).map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 text-xs text-slate-500">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C89D4B] shrink-0" />
-                    <span className="truncate">{item}</span>
-                  </div>
-                ))}
-              </div>
+            {/* Icon Box */}
+            <div className="w-14 h-14 rounded-2xl bg-[#FDF2DF] flex items-center justify-center mb-6 shadow-sm border border-[#F1E0C3] group-hover:scale-110 transition-transform duration-300">
+              {getIcon(index)}
             </div>
 
-            {/* Bottom Card Action */}
-            <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-700 group-hover:text-[#B48C36] transition-colors">
+            {/* Title */}
+            <h3 className="text-xl font-bold text-slate-900 group-hover:text-[#B48C36] transition-colors leading-tight mb-3">
+              {service.title}
+            </h3>
+
+            {/* Description */}
+            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+              {service.shortDescription}
+            </p>
+
+            {/* Checklists */}
+            <div className="space-y-3 w-full mb-8">
+              {service.highlights.slice(0, 2).map((item, idx) => (
+                <div key={idx} className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-slate-300 shrink-0 mt-0.5 fill-slate-100" />
+                  <span className="text-xs sm:text-sm text-slate-600 font-medium leading-snug">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Action Link */}
+            <div className="mt-auto pt-4 border-t border-slate-100/80 w-full flex items-center gap-2 text-sm font-bold text-slate-900 group-hover:text-[#B48C36] transition-colors">
               <span>Detaylı Kapsam</span>
-              <ArrowUpRight className="w-4 h-4 text-[#C89D4B] transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-[#C89D4B] transform group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
         ))}
