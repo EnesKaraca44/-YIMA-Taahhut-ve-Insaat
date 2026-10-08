@@ -9,6 +9,7 @@ import { WhyUsSection } from './components/WhyUsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { CorporateModal } from './components/CorporateModal';
+import { IntroOverlay } from './components/IntroOverlay';
 
 export type TabType = 'hero' | 'kurumsal' | 'hizmetler' | 'projeler' | 'neden-yima' | 'iletisim';
 
@@ -60,7 +61,9 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col relative font-sans selection:bg-[#C89D4B] selection:text-white overflow-x-hidden">
-      
+      {/* Video Splash Screen Intro Overlay */}
+      <IntroOverlay />
+
       {/* Fixed Luxury Dark Glass Header */}
       <Navbar
         activeSection={activeTab}

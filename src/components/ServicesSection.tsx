@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, Layers, CheckCircle2, ArrowRight, CheckSquare, Pickaxe, Map, Train } from 'lucide-react';
+import { Building2, Layers, CheckCircle2, ArrowRight, Pickaxe, Map, Train } from 'lucide-react';
 import { servicesData } from '../data/siteContent';
 import { ServiceItem } from '../types';
 import { ServiceModal } from './ServiceModal';
