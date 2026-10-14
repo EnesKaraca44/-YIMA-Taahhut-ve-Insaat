@@ -3,28 +3,51 @@ import { ArrowRight } from 'lucide-react';
 
 const STORAGE_KEY = 'yima_intro_seen';
 
-export const IntroOverlay: React.FC = () => {
-  const [isVisible, setIsVisible] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return !sessionStorage.getItem(STORAGE_KEY);
-    }
+const hasSeenIntro = () => {
+  try {
+    return sessionStorage.getItem(STORAGE_KEY) === 'true';
+  } catch {
+    // Storage can be unavailable in private browsing or restricted contexts.
     return false;
+  }
+};
+
+const markIntroSeen = () => {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, 'true');
+  } catch {
+    // The intro should still work when session storage is unavailable.
+  }
+};
+
+export const IntroOverlay: React.FC = () => {
+  const [videoSrc, setVideoSrc] = useState(() => {
+    if (typeof window === 'undefined') return '/intro.mp4';
+    return window.matchMedia('(max-width: 767px), (pointer: coarse)').matches
+      ? '/intro-mobile.mp4'
+      : '/intro.mp4';
+  });
+  const [isVisible, setIsVisible] = useState<boolean>(() => {
+    return typeof window !== 'undefined' && !hasSeenIntro();
   });
   const [isFadingOut, setIsFadingOut] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isClosingRef = useRef(false);
+  const previousOverflowRef = useRef('');
 
   const handleClose = () => {
-    if (isFadingOut) return;
+    if (isClosingRef.current) return;
+    isClosingRef.current = true;
     setIsFadingOut(true);
-    
-    // Save to sessionStorage so it doesn't show again in the same session
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem(STORAGE_KEY, 'true');
-    }
 
-    // Wait for fade-out animation to complete (700ms)
-    setTimeout(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    markIntroSeen();
+
+    fadeTimerRef.current = setTimeout(() => {
       setIsVisible(false);
     }, 700);
   };
@@ -32,22 +55,39 @@ export const IntroOverlay: React.FC = () => {
   useEffect(() => {
     if (!isVisible) return;
 
-    // Set sessionStorage item on initial mount of intro screen
-    sessionStorage.setItem(STORAGE_KEY, 'true');
+    const mobileMediaQuery = window.matchMedia('(max-width: 767px), (pointer: coarse)');
+    const updateVideoSource = () => {
+      setVideoSrc(mobileMediaQuery.matches ? '/intro-mobile.mp4' : '/intro.mp4');
+    };
+    if (mobileMediaQuery.addEventListener) {
+      mobileMediaQuery.addEventListener('change', updateVideoSource);
+    } else {
+      mobileMediaQuery.addListener(updateVideoSource);
+    }
 
-    // Auto close intro after 5 seconds if video keeps playing or as fallback
+    markIntroSeen();
+
+    // Close after five seconds if playback does not end first.
     timerRef.current = setTimeout(() => {
       handleClose();
     }, 5000);
 
-    // Prevent scrolling while intro screen is visible
+    previousOverflowRef.current = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
-      document.body.style.overflow = '';
+      if (fadeTimerRef.current) {
+        clearTimeout(fadeTimerRef.current);
+      }
+      if (mobileMediaQuery.removeEventListener) {
+        mobileMediaQuery.removeEventListener('change', updateVideoSource);
+      } else {
+        mobileMediaQuery.removeListener(updateVideoSource);
+      }
+      document.body.style.overflow = previousOverflowRef.current;
     };
   }, [isVisible]);
 
@@ -56,22 +96,14 @@ export const IntroOverlay: React.FC = () => {
   return (
     <div
       id="intro-overlay"
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        zIndex: 9999,
-      }}
-      className={`fixed inset-0 w-screen h-screen z-[9999] bg-slate-950 flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ease-in-out ${
+      className={`fixed inset-0 w-screen h-screen h-[100dvh] z-[9999] bg-slate-950 flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ease-in-out ${
         isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
       {/* Background Fullscreen Video */}
       <video
         ref={videoRef}
-        src="/intro.mp4"
+        src={videoSrc}
         autoPlay
         muted
         playsInline
@@ -84,15 +116,15 @@ export const IntroOverlay: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
       {/* Top Corporate Branding Badge */}
-      <div className="absolute top-6 sm:top-10 left-1/2 transform -translate-x-1/2 z-10 flex items-center gap-3 bg-slate-900/40 backdrop-blur-md px-6 py-2.5 rounded-full border border-white/15 shadow-2xl">
-        <img src="/logo-transparent.png" alt="YİMA İnşaat" className="h-7 sm:h-8 w-auto object-contain" />
-        <span className="text-xs sm:text-sm tracking-widest text-slate-100 uppercase font-semibold border-l border-white/20 pl-3">
+      <div className="absolute top-[calc(env(safe-area-inset-top)+1.5rem)] sm:top-[calc(env(safe-area-inset-top)+2.5rem)] left-1/2 -translate-x-1/2 z-10 flex max-w-[calc(100vw-2rem)] items-center gap-2 sm:gap-3 bg-slate-900/40 backdrop-blur-md px-4 sm:px-6 py-2.5 rounded-full border border-white/15 shadow-2xl">
+        <img src="/logo-transparent.png" alt="YİMA İnşaat" className="h-6 sm:h-8 w-auto shrink-0 object-contain" />
+        <span className="truncate text-[10px] sm:text-sm tracking-wide sm:tracking-widest text-slate-100 uppercase font-semibold border-l border-white/20 pl-3">
           YİMA TAAHHÜT & İNŞAAT
         </span>
       </div>
 
       {/* Central / Bottom Call-To-Action Button */}
-      <div className="absolute bottom-12 sm:bottom-16 z-10 flex flex-col items-center gap-4">
+      <div className="absolute bottom-[calc(env(safe-area-inset-bottom)+3rem)] sm:bottom-[calc(env(safe-area-inset-bottom)+4rem)] z-10 flex flex-col items-center gap-4">
         <button
           onClick={handleClose}
           type="button"
