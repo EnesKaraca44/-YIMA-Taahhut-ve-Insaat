@@ -118,7 +118,7 @@ export const IntroOverlay: React.FC = () => {
       {/* Top Corporate Branding Badge */}
       <div className="absolute top-[calc(env(safe-area-inset-top)+1.5rem)] sm:top-[calc(env(safe-area-inset-top)+2.5rem)] left-1/2 -translate-x-1/2 z-10 flex max-w-[calc(100vw-2rem)] items-center gap-2 sm:gap-3 bg-slate-900/40 backdrop-blur-md px-4 sm:px-6 py-2.5 rounded-full border border-white/15 shadow-2xl">
         <img src="/logo-transparent.png" alt="YİMA İnşaat" className="h-6 sm:h-8 w-auto shrink-0 object-contain" />
-        <span className="truncate text-[10px] sm:text-sm tracking-wide sm:tracking-widest text-slate-100 uppercase font-semibold border-l border-white/20 pl-3">
+        <span className="min-w-0 max-w-[calc(100vw-7rem)] whitespace-normal break-words text-[10px] leading-tight sm:max-w-none sm:text-sm tracking-wide sm:tracking-widest text-slate-100 uppercase font-semibold border-l border-white/20 pl-3">
           YİMA TAAHHÜT & İNŞAAT
         </span>
       </div>
