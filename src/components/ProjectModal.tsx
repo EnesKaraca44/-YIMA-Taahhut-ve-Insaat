@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, MapPin, Calendar, CheckCircle, ArrowRight, ZoomIn } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { X, MapPin, Calendar, CheckCircle, ArrowRight, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProjectItem } from '../types';
 
 import { createPortal } from 'react-dom';
@@ -12,6 +12,26 @@ interface ProjectModalProps {
 
 export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onNavigateContact }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const galleryRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
+
+  const scrollGallery = (direction: -1 | 1) => {
+    if (!galleryRef.current) return;
+    galleryRef.current.scrollBy({
+      left: direction * galleryRef.current.clientWidth * 0.8,
+      behavior: 'smooth',
+    });
+  };
+
+  const closeLightbox = () => setSelectedImage(null);
+  const showAdjacentImage = (direction: -1 | 1) => {
+    const images = project?.galleryImages ?? [];
+    if (images.length < 2) return;
+    const nextIndex = (selectedImageIndex + direction + images.length) % images.length;
+    setSelectedImageIndex(nextIndex);
+    setSelectedImage(images[nextIndex]);
+  };
 
   if (!project) return null;
 
@@ -103,36 +123,72 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, on
             )}
 
             {/* Media Gallery */}
-            {(project.galleryImages || project.videoUrl) && (
+            {(project.galleryImages?.length || project.videoUrl) && (
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Saha Fotoğrafları & Medya</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {project.videoUrl && (
-                    <div className="sm:col-span-2 lg:col-span-3 bg-slate-900 rounded-xl overflow-hidden relative border border-slate-200 flex items-center justify-center">
-                      <video 
-                        src={project.videoUrl} 
-                        controls 
-                        className="w-full h-auto max-h-[60vh] object-contain"
-                        preload="metadata"
-                      />
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Saha Fotoğrafları & Medya</h4>
+                  {!!project.galleryImages?.length && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-slate-400">Yana kaydırın</span>
+                      <button
+                        type="button"
+                        onClick={() => scrollGallery(-1)}
+                        aria-label="Önceki fotoğraflar"
+                        className="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-700 hover:border-[#C89D4B] hover:text-[#B48C36]"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => scrollGallery(1)}
+                        aria-label="Sonraki fotoğraflar"
+                        className="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-700 hover:border-[#C89D4B] hover:text-[#B48C36]"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
                     </div>
                   )}
-                {project.galleryImages?.map((imgUrl, i) => (
-                  <div 
-                    key={i} 
-                    onClick={() => setSelectedImage(imgUrl)}
-                    className="aspect-video bg-slate-100 rounded-xl overflow-hidden border border-slate-200 relative group cursor-pointer hover:border-[#C89D4B]/50 transition-colors"
-                  >
-                    <div 
-                      className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
-                      style={{ backgroundImage: `url('${imgUrl}')` }}
+                </div>
+                {project.videoUrl && (
+                  <div className="mb-3 bg-slate-900 rounded-xl overflow-hidden relative border border-slate-200 flex items-center justify-center">
+                    <video
+                      src={project.videoUrl}
+                      controls
+                      className="w-full h-auto max-h-[60vh] object-contain"
+                      preload="metadata"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 duration-300">
-                      <ZoomIn className="w-6 h-6 text-white drop-shadow-md" />
-                    </div>
                   </div>
-                ))}
-              </div>
+                )}
+                {!!project.galleryImages?.length && (
+                <div
+                  ref={galleryRef}
+                  className="flex gap-3 overflow-x-auto overscroll-x-contain snap-x snap-mandatory pb-2 touch-pan-x"
+                  aria-label="Proje fotoğraf galerisi"
+                >
+                  {project.galleryImages.map((imgUrl, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        setSelectedImageIndex(i);
+                        setSelectedImage(imgUrl);
+                      }}
+                      aria-label={`${i + 1}. fotoğrafı büyüt`}
+                      className="group relative aspect-video w-[82%] shrink-0 snap-start overflow-hidden rounded-xl border border-slate-200 bg-slate-100 text-left sm:w-[48%] lg:w-[32%]"
+                    >
+                      <img
+                        src={imgUrl}
+                        alt={`${project.title} saha fotoğrafı ${i + 1}`}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all group-hover:bg-black/20 group-hover:opacity-100">
+                        <ZoomIn className="h-6 w-6 text-white drop-shadow-md" />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                )}
             </div>
           )}
 
@@ -171,19 +227,63 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, on
       {/* Lightbox Overlay */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 z-[110] bg-black/95 flex items-center justify-center p-4 sm:p-8 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-200"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-[110] flex items-center justify-center bg-black/95 p-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-[calc(env(safe-area-inset-top)+1rem)] backdrop-blur-sm animate-in fade-in zoom-in-95 duration-200 touch-pan-y"
+          onClick={closeLightbox}
+          onTouchStart={(event) => {
+            touchStartX.current = event.touches[0]?.clientX ?? null;
+          }}
+          onTouchEnd={(event) => {
+            if (touchStartX.current === null) return;
+            const deltaX = event.changedTouches[0].clientX - touchStartX.current;
+            if (Math.abs(deltaX) > 50) showAdjacentImage(deltaX < 0 ? 1 : -1);
+            touchStartX.current = null;
+          }}
         >
           <button 
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-            onClick={() => setSelectedImage(null)}
+            type="button"
+            aria-label="Galeriyi kapat"
+            className="absolute right-4 top-[calc(env(safe-area-inset-top)+1rem)] z-10 rounded-full bg-white/15 p-3 text-white transition-colors hover:bg-white/25 sm:right-6 sm:top-6"
+            onClick={(event) => {
+              event.stopPropagation();
+              closeLightbox();
+            }}
           >
             <X className="w-6 h-6" />
           </button>
+          {(project.galleryImages?.length ?? 0) > 1 && (
+            <>
+              <button
+                type="button"
+                aria-label="Önceki fotoğraf"
+                className="absolute left-3 sm:left-6 rounded-full bg-white/15 p-3 text-white transition-colors hover:bg-white/25"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  showAdjacentImage(-1);
+                }}
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <button
+                type="button"
+                aria-label="Sonraki fotoğraf"
+                className="absolute right-3 sm:right-6 rounded-full bg-white/15 p-3 text-white transition-colors hover:bg-white/25"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  showAdjacentImage(1);
+                }}
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+              <span className="absolute bottom-[calc(env(safe-area-inset-bottom)+1rem)] rounded-full bg-black/50 px-3 py-1 text-sm text-white">
+                {selectedImageIndex + 1} / {project.galleryImages?.length}
+              </span>
+            </>
+          )}
           <img 
             src={selectedImage} 
-            alt="Büyük Görünüm" 
-            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            alt={`${project.title} saha fotoğrafı ${selectedImageIndex + 1}`}
+            draggable={false}
+            className="max-h-full max-w-full select-none rounded-lg object-contain shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
         </div>
