@@ -27,6 +27,7 @@ export const IntroOverlay: React.FC = () => {
       ? '/intro-mobile.mp4'
       : '/intro.mp4';
   });
+  const isMobileVideo = videoSrc === '/intro-mobile.mp4';
   const [isVisible, setIsVisible] = useState<boolean>(() => {
     return typeof window !== 'undefined' && !hasSeenIntro();
   });
@@ -109,7 +110,14 @@ export const IntroOverlay: React.FC = () => {
         playsInline
         onEnded={handleClose}
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ objectFit: 'cover' }}
+        style={{
+          objectFit: 'cover',
+          // The mobile encode keeps the full landscape shot inside a blurred
+          // portrait canvas. Enlarge it so the actual footage fills the screen.
+          transform: isMobileVideo
+            ? `scale(${Math.max(1, Math.min(4.5, (window.innerHeight / window.innerWidth) * (16 / 9)))})`
+            : undefined,
+        }}
       />
 
       {/* Ultra-subtle bottom shadow only for button readability - keeps video crisp & bright */}
