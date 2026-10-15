@@ -77,7 +77,7 @@ export const App: React.FC = () => {
         {/* Section 1: Hero */}
         <section 
           id="hero" 
-          className="relative min-h-[95vh] lg:min-h-screen flex items-center justify-center bg-slate-950 text-white pt-32 pb-14 scroll-mt-28 overflow-hidden"
+          className="relative min-h-[100svh] lg:min-h-screen flex items-center justify-center bg-slate-950 text-white pt-24 sm:pt-32 pb-10 sm:pb-14 scroll-mt-28 overflow-hidden"
         >
           {/* Full-bleed Cinematic Architectural Background */}
           <div 
@@ -150,7 +150,9 @@ export const App: React.FC = () => {
         href="https://wa.me/905301684412" 
         target="_blank" 
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-[#25D366] text-white shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200 flex items-center gap-2 group border border-white/20"
+        className={`fixed bottom-6 right-6 z-50 p-3 rounded-full bg-[#25D366] text-white shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200 items-center gap-2 group border border-white/20 ${
+          activeTab === 'hero' ? 'hidden sm:flex' : 'flex'
+        }`}
         title="WhatsApp Doğrudan İletişim"
       >
         <MessageCircle className="w-5 h-5 fill-current" />

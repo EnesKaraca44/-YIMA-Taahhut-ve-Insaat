@@ -8,22 +8,22 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-4 sm:p-8 my-auto">
+    <div className="relative w-full flex flex-col justify-center items-center text-center px-4 py-4 sm:p-8">
       
       {/* Subtle Warm Light Ambient behind text */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[420px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Main Content Container */}
-      <div className="relative max-w-5xl mx-auto space-y-6 sm:space-y-7 z-10 w-full flex flex-col items-center">
+      <div className="relative max-w-5xl mx-auto space-y-4 sm:space-y-7 z-10 w-full flex flex-col items-center">
         
         {/* Top Architectural Badge (inspired by Reference 1: EST. 2023 / Prestij Mimari) */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/70 border border-white/15 backdrop-blur-md text-[#E5BE72] text-xs sm:text-sm font-bold tracking-[0.2em] uppercase shadow-xl">
+        <div className="inline-flex max-w-full items-center justify-center gap-2 px-3 py-1.5 sm:gap-2.5 sm:px-4 rounded-full bg-slate-900/70 border border-white/15 backdrop-blur-md text-[#E5BE72] text-[10px] sm:text-sm font-bold tracking-[0.14em] sm:tracking-[0.2em] uppercase shadow-xl">
           <HardHat className="w-4 h-4 text-[#C89D4B]" />
           <span>Karayolları &bull; Demiryolları &bull; Sanat Yapıları</span>
         </div>
 
         {/* Primary Grand Headline (inspired by Reference 1 & 2) */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white uppercase leading-[1.12] drop-shadow-2xl">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white uppercase leading-[1.08] sm:leading-[1.12] drop-shadow-2xl">
           Yolları, Köprüleri ve Altyapıyı, <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-[#C89D4B] to-amber-400">
             Güvenle Geleceğe Taşıyoruz.
@@ -31,15 +31,15 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </h1>
 
         {/* Corporate Sub-paragraph */}
-        <p className="text-sm sm:text-base lg:text-lg text-slate-200/90 max-w-3xl mx-auto font-normal leading-relaxed drop-shadow-md">
+        <p className="text-sm sm:text-base lg:text-lg text-slate-200/90 max-w-3xl mx-auto font-normal leading-6 sm:leading-relaxed drop-shadow-md">
           {companyData.descriptionShort}
         </p>
 
         {/* Action CTAs (inspired by Reference 2: Gold Solid + Translucent Glass) */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+        <div className="pt-1 sm:pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
           <button
             onClick={() => onNavigate('hizmetler')}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-sm font-extrabold tracking-wider text-slate-950 bg-gradient-to-r from-[#C89D4B] via-[#D97706] to-[#B48C36] hover:brightness-110 active:scale-[0.98] transition-all duration-200 shadow-xl shadow-[#C89D4B]/30 cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 rounded-xl text-sm font-extrabold tracking-wider text-slate-950 bg-gradient-to-r from-[#C89D4B] via-[#D97706] to-[#B48C36] hover:brightness-110 active:scale-[0.98] transition-all duration-200 shadow-xl shadow-[#C89D4B]/30 cursor-pointer"
           >
             <span>Hizmet & İmalatlarımız</span>
             <ArrowRight className="w-4 h-4 text-slate-950" />
@@ -47,14 +47,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           
           <button
             onClick={() => onNavigate('iletisim')}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md active:scale-[0.98] transition-all duration-200 cursor-pointer shadow-lg"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md active:scale-[0.98] transition-all duration-200 cursor-pointer shadow-lg"
           >
             <span>Doğrudan İletişim & Teklif</span>
           </button>
         </div>
 
         {/* 3 Core Trust Cards in Dark Frosted Glass (inspired by Reference 1 & 2) */}
-        <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto text-left w-full">
+        <div className="hidden sm:grid pt-4 grid-cols-3 gap-4 max-w-4xl mx-auto text-left w-full">
           <div 
             onClick={() => onNavigate('hizmetler')}
             className="p-4 rounded-xl bg-slate-950/60 backdrop-blur-md border border-white/10 hover:border-[#C89D4B]/60 transition-all duration-200 cursor-pointer shadow-xl group"
@@ -105,7 +105,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <button
           type="button"
           onClick={() => onNavigate('kurumsal')}
-          className="flex flex-col items-center gap-1.5 pt-2 text-slate-400 hover:text-[#E5BE72] text-[10px] sm:text-xs tracking-[0.25em] uppercase font-semibold cursor-pointer group transition-all duration-300 focus:outline-none"
+          className="hidden sm:flex flex-col items-center gap-1.5 pt-2 text-slate-400 hover:text-[#E5BE72] text-[10px] sm:text-xs tracking-[0.25em] uppercase font-semibold cursor-pointer group transition-all duration-300 focus:outline-none"
           title="Kurumsal bilgileri ve şirket profilini keşfedin"
           aria-label="Kurumsal profilini keşfet"
         >
