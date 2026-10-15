@@ -96,7 +96,7 @@ export const IntroOverlay: React.FC = () => {
   return (
     <div
       id="intro-overlay"
-      className={`fixed inset-0 w-screen h-screen h-[100dvh] z-[9999] bg-slate-950 flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ease-in-out ${
+      className={`fixed inset-0 w-full z-[9999] bg-slate-950 flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ease-in-out ${
         isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >

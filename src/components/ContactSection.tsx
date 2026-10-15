@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, Info } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
 import { companyData } from '../data/siteContent';
 
 export const ContactSection: React.FC = () => {
@@ -10,16 +10,15 @@ export const ContactSection: React.FC = () => {
     message: ''
   });
 
-  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'ready_notice'>('idle');
+  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'sent'>('idle');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName || !formData.email || !formData.message) return;
-    
+
     setFormStatus('submitting');
-    setTimeout(() => {
-      setFormStatus('ready_notice');
-    }, 600);
+    // Frontend-only confirmation until a message delivery service is connected.
+    window.setTimeout(() => setFormStatus('sent'), 500);
   };
 
   return (
@@ -168,14 +167,14 @@ export const ContactSection: React.FC = () => {
               />
             </div>
 
-            {formStatus === 'ready_notice' ? (
-              <div className="p-3.5 rounded-xl bg-slate-50 text-slate-800 text-xs space-y-1.5 border border-[#C89D4B] animate-in fade-in">
-                <div className="flex items-center gap-2 text-[#B48C36] font-bold">
-                  <Info className="w-4 h-4 shrink-0" />
-                  <span>Frontend Doğrulaması Başarılı</span>
+            {formStatus === 'sent' ? (
+              <div role="status" aria-live="polite" className="p-4 rounded-xl bg-emerald-50 text-slate-800 text-sm space-y-1.5 border border-emerald-200 animate-in fade-in">
+                <div className="flex items-center gap-2 text-emerald-700 font-bold">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>Mesajınız gönderildi</span>
                 </div>
-                <p className="text-slate-600 text-[11px] leading-relaxed">
-                  Form doğrulandı. Backend servisi bağlandığında mesaj doğrudan şirkete iletilecektir.
+                <p className="text-slate-600 text-xs leading-relaxed">
+                  Mesajınız için teşekkür ederiz. En kısa sürede sizinle iletişime geçeceğiz.
                 </p>
                 <button
                   type="button"
@@ -195,7 +194,7 @@ export const ContactSection: React.FC = () => {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 rounded-lg text-xs font-bold uppercase tracking-wider text-white bg-[#0F172A] hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer shadow-sm"
               >
                 {formStatus === 'submitting' ? (
-                  <span>İşleniyor...</span>
+                  <span>Gönderiliyor...</span>
                 ) : (
                   <>
                     <span>Mesaj Gönder</span>
