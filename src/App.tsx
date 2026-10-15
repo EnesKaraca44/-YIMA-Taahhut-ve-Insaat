@@ -96,7 +96,7 @@ export const App: React.FC = () => {
         {/* Section 2: Kurumsal (About) */}
         <section 
           id="kurumsal" 
-          className="w-full py-16 sm:py-24 bg-white text-slate-900 border-b border-slate-100 scroll-mt-28"
+          className="w-full py-8 sm:py-12 bg-white text-slate-900 border-b border-slate-100 scroll-mt-28"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <AboutSection onOpenCorporateModal={() => setIsCorporateModalOpen(true)} />
@@ -126,7 +126,7 @@ export const App: React.FC = () => {
         {/* Section 5: Neden YİMA? (Why Us) */}
         <section 
           id="neden-yima" 
-          className="w-full py-16 sm:py-24 bg-slate-50 text-slate-900 border-b border-slate-200/60 scroll-mt-28"
+          className="w-full py-8 sm:py-12 bg-slate-50 text-slate-900 border-b border-slate-200/60 scroll-mt-28"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <WhyUsSection />

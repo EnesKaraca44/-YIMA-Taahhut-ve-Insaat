@@ -16,7 +16,7 @@ export const WhyUsSection: React.FC = () => {
   };
 
   return (
-    <div className="w-full py-4 text-slate-900 relative">
+    <div className="w-full py-0 text-slate-900 relative">
       {/* Section Header */}
       <div className="mb-10 text-center sm:text-left">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-[#B48C36] text-xs font-bold tracking-wider uppercase mb-3">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, CheckCircle2, Building2, Briefcase, Ruler, Layers, ArrowRight } from 'lucide-react';
 import { ServiceItem } from '../types';
@@ -10,6 +10,35 @@ interface ServiceModalProps {
 }
 
 export const ServiceModal: React.FC<ServiceModalProps> = ({ service, onClose, onNavigateContact }) => {
+  useEffect(() => {
+    if (!service) return;
+
+    const scrollY = window.scrollY;
+    const previousBodyStyles = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+    };
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
+    // Keep the page fixed while the modal's own content is being scrolled.
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyStyles.overflow;
+      document.body.style.position = previousBodyStyles.position;
+      document.body.style.top = previousBodyStyles.top;
+      document.body.style.width = previousBodyStyles.width;
+      window.scrollTo(0, scrollY);
+    };
+  }, [service]);
+
   if (!service) return null;
 
   const renderIcon = (name: string) => {
@@ -22,18 +51,18 @@ export const ServiceModal: React.FC<ServiceModalProps> = ({ service, onClose, on
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in zoom-in-95 duration-200">
       <div 
-        className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
+        className="relative flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl sm:max-h-[calc(100dvh-2rem)]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="service-modal-title"
       >
         {/* Header */}
-        <div className="bg-brand-midnight text-white p-6 sm:p-8 relative border-b border-brand-borderDark">
+        <div className="relative shrink-0 border-b border-brand-borderDark bg-brand-midnight p-5 pr-14 text-white sm:p-8">
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+            className="absolute right-4 top-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer sm:right-6 sm:top-6"
             aria-label="Kapat"
           >
             <X className="w-5 h-5" />
@@ -50,7 +79,7 @@ export const ServiceModal: React.FC<ServiceModalProps> = ({ service, onClose, on
         </div>
 
         {/* Content */}
-        <div className="p-6 sm:p-8 space-y-6">
+        <div className="min-h-0 overflow-y-auto overscroll-contain p-5 space-y-6 sm:p-8">
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Genel Tanım</h4>
             <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
