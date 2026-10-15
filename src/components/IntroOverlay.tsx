@@ -124,28 +124,28 @@ export const IntroOverlay: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
       {/* Top Corporate Branding Badge */}
-      <div className="absolute top-[calc(env(safe-area-inset-top)+1.5rem)] sm:top-[calc(env(safe-area-inset-top)+2.5rem)] left-1/2 -translate-x-1/2 z-10 flex max-w-[calc(100vw-2rem)] items-center gap-2 sm:gap-3 bg-slate-900/40 backdrop-blur-md px-4 sm:px-6 py-2.5 rounded-full border border-white/15 shadow-2xl">
-        <img src="/logo-transparent.png" alt="YİMA İnşaat" className="h-6 sm:h-8 w-auto shrink-0 object-contain" />
-        <span className="min-w-0 max-w-[calc(100vw-7rem)] whitespace-normal break-words text-[10px] leading-tight sm:max-w-none sm:text-sm tracking-wide sm:tracking-widest text-slate-100 uppercase font-semibold border-l border-white/20 pl-3">
+      <div className="absolute top-[calc(env(safe-area-inset-top)+1.5rem)] sm:top-[clamp(2.5rem,5vh,5rem)] left-1/2 -translate-x-1/2 z-10 flex max-w-[calc(100vw-2rem)] items-center gap-2 sm:gap-[clamp(0.75rem,1.2vw,1.5rem)] bg-slate-900/40 backdrop-blur-md px-4 sm:px-[clamp(1.5rem,2.5vw,3rem)] py-2.5 sm:py-[clamp(0.75rem,1.2vh,1.25rem)] rounded-full border border-white/15 shadow-2xl">
+        <img src="/logo-transparent.png" alt="YİMA İnşaat" className="h-6 sm:h-[clamp(2rem,3.2vw,3.75rem)] w-auto shrink-0 object-contain" />
+        <span className="min-w-0 max-w-[calc(100vw-7rem)] whitespace-normal break-words text-[10px] leading-tight sm:max-w-none sm:text-[clamp(0.875rem,1.2vw,1.5rem)] tracking-wide sm:tracking-[0.12em] text-slate-100 uppercase font-semibold border-l border-white/20 pl-3 sm:pl-[clamp(0.75rem,1.2vw,1.5rem)]">
           YİMA TAAHHÜT & İNŞAAT
         </span>
       </div>
 
       {/* Central / Bottom Call-To-Action Button */}
-      <div className="absolute bottom-[calc(env(safe-area-inset-bottom)+3rem)] sm:bottom-[calc(env(safe-area-inset-bottom)+4rem)] z-10 flex flex-col items-center gap-4">
+      <div className="absolute bottom-[calc(env(safe-area-inset-bottom)+3rem)] sm:bottom-[clamp(3rem,6vh,6rem)] z-10 flex flex-col items-center gap-4 sm:gap-[clamp(1rem,2vh,2rem)]">
         <button
           onClick={handleClose}
           type="button"
           aria-label="Ana Sayfaya Geç"
-          className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-slate-900/50 hover:bg-slate-900/80 backdrop-blur-md border border-white/25 hover:border-[#C89D4B] text-white font-medium text-sm sm:text-base tracking-wider transition-all duration-300 shadow-2xl hover:shadow-[#C89D4B]/20 active:scale-95 cursor-pointer"
+          className="group relative inline-flex items-center gap-3 sm:gap-[clamp(0.75rem,1.4vw,1.75rem)] px-8 py-4 sm:px-[clamp(2rem,4vw,5rem)] sm:py-[clamp(1rem,1.8vh,2rem)] rounded-full bg-slate-900/50 hover:bg-slate-900/80 backdrop-blur-md border border-white/25 hover:border-[#C89D4B] text-white font-medium text-sm sm:text-[clamp(1rem,1.45vw,1.875rem)] tracking-wider transition-all duration-300 shadow-2xl hover:shadow-[#C89D4B]/20 active:scale-95 cursor-pointer"
         >
           <span className="relative z-10 font-semibold">Ana Sayfaya Geç</span>
-          <ArrowRight className="w-5 h-5 text-[#C89D4B] group-hover:translate-x-1 transition-transform duration-300" />
+          <ArrowRight className="h-5 w-5 sm:h-[clamp(1.25rem,1.8vw,2.25rem)] sm:w-[clamp(1.25rem,1.8vw,2.25rem)] text-[#C89D4B] group-hover:translate-x-1 transition-transform duration-300" />
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#C89D4B]/0 via-[#C89D4B]/20 to-[#C89D4B]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </button>
 
         {/* Animated Progress Bar */}
-        <div className="w-36 h-1 bg-white/20 rounded-full overflow-hidden backdrop-blur-sm">
+        <div className="w-36 h-1 sm:w-[clamp(9rem,14vw,20rem)] sm:h-1.5 bg-white/20 rounded-full overflow-hidden backdrop-blur-sm">
           <div
             className="h-full bg-[#C89D4B] rounded-full transition-all duration-100 ease-linear"
             style={{
